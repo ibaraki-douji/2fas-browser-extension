@@ -1,0 +1,64 @@
+stages:
+  - build
+  - publish
+
+before_script: &setup
+  - apk add --no-cache zip
+  - npm install --legacy-peer-deps
+
+
+
+# Build Edge Extension
+build-edge:
+  stage: build
+  image: node:20.11-alpine
+  before_script:
+    - *setup
+  script:
+    - npm run edge-prod
+    - cd public && zip -r ../edge.zip . && cd ..
+  artifacts:
+    paths:
+      - edge.zip
+
+# Build Chrome Extension
+build-chrome:
+  stage: build
+  image: node:20.11-alpine
+  before_script:
+    - *setup
+  script:
+    - npm run chrome-prod
+    - cd public && zip -r ../chrome.zip . && cd ..
+  artifacts:
+    paths:
+      - chrome.zip
+
+# Build Firefox Extension
+build-firefox:
+  stage: build
+  image: node:20.11-alpine
+  before_script:
+    - *setup
+  script:
+    - npm run firefox-prod
+    - cd public && zip -r ../firefox.zip . && cd ..
+  artifacts:
+    paths:
+      - firefox.zip
+    
+# Upload Edge Extension
+upload:
+  stage: publish
+  needs:
+    - job: build-edge
+      artifacts: true
+    - job: build-chrome
+      artifacts: true
+    - job: build-firefox
+      artifacts: true
+  script:
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./edge.zip" "${PACKAGE_REGISTRY_URL}/edge.zip" && \
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./chrome.zip" "${PACKAGE_REGISTRY_URL}/chrome.zip" && \
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./firefox.zip" "${PACKAGE_REGISTRY_URL}/firefox.zip"
