@@ -59,6 +59,6 @@ upload:
       artifacts: true
   script:
     - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./edge.zip" "${PACKAGE_REGISTRY_URL}/edge.zip" && \
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./chrome.zip" "${PACKAGE_REGISTRY_URL}/chrome.zip" && \
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./firefox.zip" "${PACKAGE_REGISTRY_URL}/firefox.zip"
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./edge.zip" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/2fas/edge/edge.zip" && \
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./chrome.zip" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/2fas/chrome/chrome.zip" && \
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" -L --upload-file "./firefox.zip" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/2fas/firefox/firefox.zip" \
