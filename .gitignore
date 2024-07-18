@@ -14,6 +14,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 node_modules/
+package-lock.json
 .npm
 .eslintcache
 .node_repl_history
@@ -27,6 +28,8 @@ build/
 yarn.lock
 .vscode
 testFiles/
+public.*
+.fuse*
 
 # Xcode
 #
