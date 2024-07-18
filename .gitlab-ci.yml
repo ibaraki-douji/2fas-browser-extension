@@ -2,7 +2,7 @@ stages:
   - build
   - publish
 
-before_script: &setup
+.before_script: &setup
   - apk add --no-cache zip
   - npm install --legacy-peer-deps
 
